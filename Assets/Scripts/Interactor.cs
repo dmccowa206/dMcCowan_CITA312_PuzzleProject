@@ -25,7 +25,7 @@ public class Interactor : MonoBehaviour
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, firstPersonController.interactRange))
         {
             Debug.Log($"Touched {hit.collider}/n run hit.collider.ObjectInteraction");
-            ObjectInteraction obInteract = hit.collider.GetComponent<ObjectInteraction>();
+            ObjectInteraction obInteract = hit.collider.GetComponentInParent<ObjectInteraction>();
             obInteract?.Interaction();
         }
     }

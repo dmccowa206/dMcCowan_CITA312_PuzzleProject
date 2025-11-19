@@ -7,5 +7,7 @@ public class ObjectInteraction : MonoBehaviour
     public void Interaction()
     {
         animator.Play(clipName, 0 , 0f);
+        DoorControl doorCon = GetComponent<DoorControl>();
+        doorCon?.OpenDoor();
     }
 }
