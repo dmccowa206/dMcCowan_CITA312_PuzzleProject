@@ -20,12 +20,13 @@ public class Interactor : MonoBehaviour
 
         starterAssetsInputs.InteractInput(false);
 
-        Debug.Log($"Passed if");
         RaycastHit hit;
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, firstPersonController.interactRange))
         {
-            Debug.Log($"Touched {hit.collider}");
+            Debug.Log($"Touched {hit.collider}/n run hit.collider.ObjectInteraction");
+            ObjectInteraction obInteract = hit.collider.GetComponent<ObjectInteraction>();
+            obInteract?.Interaction();
         }
     }
 }

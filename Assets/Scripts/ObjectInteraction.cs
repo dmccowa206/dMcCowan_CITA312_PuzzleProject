@@ -1,0 +1,11 @@
+using UnityEngine;
+
+public class ObjectInteraction : MonoBehaviour
+{
+    [SerializeField] Animator animator;
+    [SerializeField] string clipName;
+    public void Interaction()
+    {
+        animator.Play(clipName, 0 , 0f);
+    }
+}
