@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 2211279528735965285}
   m_Layer: 0
   m_Name: Model
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -489,7 +489,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2057
+  m_VersionIndex: 2060
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -629,9 +629,10 @@ GameObject:
   - component: {fileID: 6824657812329678574}
   - component: {fileID: 5208988131473558029}
   - component: {fileID: 80280919390861289}
+  - component: {fileID: 1262320468477769763}
   m_Layer: 0
   m_Name: Button
-  m_TagString: Untagged
+  m_TagString: Button
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -679,3 +680,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorControl
   door: {fileID: 0}
+--- !u!114 &1262320468477769763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4574489711097063631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f3d0e8f623d811479c087b94d31855a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObjectInteraction
+  animator: {fileID: 0}
+  clipName: 

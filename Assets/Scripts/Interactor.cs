@@ -24,9 +24,22 @@ public class Interactor : MonoBehaviour
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, firstPersonController.interactRange))
         {
-            Debug.Log($"Touched {hit.collider}/n run hit.collider.ObjectInteraction");
-            ObjectInteraction obInteract = hit.collider.GetComponentInParent<ObjectInteraction>();
-            obInteract?.Interaction();
+            
+                    // ObjectInteraction obInteract = hit.collider.GetComponentInParent<ObjectInteraction>();
+                    // obInteract?.Interaction();
+            Debug.Log($"Touched {hit.collider.gameObject.tag} run hit.collider.ObjectInteraction");
+
+            switch(hit.collider.gameObject.tag)
+            {
+                case "Button":
+                    ObjectInteraction obInteract = hit.collider.GetComponentInParent<ObjectInteraction>();
+                    obInteract?.Interaction();
+                    break;
+                case "SlidePiece":
+                    SlidePiece slidepiece = hit.collider.GetComponent<SlidePiece>();
+                    slidepiece?.MoveEmpty();
+                    break;
+            }
         }
     }
 }
