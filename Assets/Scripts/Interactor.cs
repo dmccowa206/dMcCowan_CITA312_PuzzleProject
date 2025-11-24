@@ -36,8 +36,8 @@ public class Interactor : MonoBehaviour
                     obInteract?.Interaction();
                     break;
                 case "SlidePiece":
-                    SlidePiece slidepiece = hit.collider.GetComponent<SlidePiece>();
-                    slidepiece?.MoveEmpty();
+                    SlidePuzzle slidepuzzle = hit.collider.GetComponentInParent<SlidePuzzle>();
+                    slidepuzzle?.MoveEmpty(hit.collider.transform);
                     break;
             }
         }
