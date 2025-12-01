@@ -1,5 +1,5 @@
+using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.ProBuilder;
 
@@ -10,17 +10,25 @@ public class SlidePuzzle : MonoBehaviour
     List<Transform> pieces;
     int size, emptyLocation;
     DoorControl doorCon;
-    Vector3 adjustedStart;
+    bool shuffling = false;
     void Awake()
     {
         doorCon = GetComponent<DoorControl>();
         size = 3;
-        adjustedStart = new Vector3(-width, 0f, width);
         pieces = new List<Transform>();
     }
     void Start()
     {
         CreateSlidePieces();
+        Shuffle();
+    }
+    void Update()
+    {
+        // if (!shuffling && CheckCompletion())
+        // {
+        //     shuffling = true;
+        //     StartCoroutine(WaitShuffle(0.5f));
+        // }
     }
     void CreateSlidePieces()
     {
@@ -33,7 +41,7 @@ public class SlidePuzzle : MonoBehaviour
                 piece.localPosition = new Vector3((width * col) - width,
                     0,
                     -(width * row) + width);
-                piece.name = $"{row}{col}";
+                piece.name = $"{row * size + col}";
                 if ((row == size -1) && (col == size -1))
                 {
                     emptyLocation = (size * size) - 1;
@@ -45,10 +53,10 @@ public class SlidePuzzle : MonoBehaviour
                     // Debug.Log(mesh.vertices.Length);
                     Vector3[] vertices = mesh.vertices;
                     Vector2[] uv = new Vector2[vertices.Length];
-                    uv[0] = new Vector2(width * col, 1 - (width *(row + 1)));
-                    uv[1] = new Vector2(width * (col + 1), 1 - (width *(row + 1)));
-                    uv[2] = new Vector2(width * col, 1 - (width * row));
-                    uv[3] = new Vector2(width * (col + 1), 1 - (width * row));
+                    // uv[0] = new Vector2(width * col, 1 - (width *(row + 1)));
+                    // uv[1] = new Vector2(width * (col + 1), 1 - (width *(row + 1)));
+                    // uv[2] = new Vector2(width * col, 1 - (width * row));
+                    // uv[3] = new Vector2(width * (col + 1), 1 - (width * row));
                     for (int i = 0; i < uv.Length; i++)
                     {
                         if (vertices[i].y > 0)
@@ -96,6 +104,11 @@ public class SlidePuzzle : MonoBehaviour
                 if (SwapIfValid(i, +1, size - 1)) { break; }
             }
         }
+        Debug.Log(selectedPiece.name + CheckCompletion());
+        if (CheckCompletion())
+        {
+            OnFinish();
+        }
     }
     bool SwapIfValid(int i, int offset, int colCheck)
     {
@@ -108,6 +121,41 @@ public class SlidePuzzle : MonoBehaviour
             return true;
         }
         return false;
+    }
+    bool CheckCompletion()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].name != $"{i}")
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    IEnumerator WaitShuffle(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Shuffle();
+        shuffling = false;
+    }
+    void Shuffle()
+    {
+        int count = 0;
+        int last = 0;
+        while (count < (size * size * size))
+        {
+            int rand = Random.Range(0, size * size);
+            if (rand == last)
+            {
+                continue;
+            }
+            last = emptyLocation;
+                if (SwapIfValid(rand, -size, size)) { count++; }
+                else if (SwapIfValid(rand, +size, size)) { count++; }
+                else if (SwapIfValid(rand, -1, 0)) { count++; }
+                else if (SwapIfValid(rand, +1, size - 1)) { count++; }
+        }
     }
     void OnFinish()
     {
