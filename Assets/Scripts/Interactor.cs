@@ -27,7 +27,7 @@ public class Interactor : MonoBehaviour
             
                     // ObjectInteraction obInteract = hit.collider.GetComponentInParent<ObjectInteraction>();
                     // obInteract?.Interaction();
-            Debug.Log($"Touched {hit.collider.gameObject.tag} run hit.collider.ObjectInteraction");
+            Debug.Log($"Touched {hit.collider.gameObject.tag} run Interaction");
 
             switch(hit.collider.gameObject.tag)
             {
@@ -38,6 +38,12 @@ public class Interactor : MonoBehaviour
                 case "SlidePiece":
                     SlidePuzzle slidepuzzle = hit.collider.GetComponentInParent<SlidePuzzle>();
                     slidepuzzle?.MoveEmpty(hit.collider.transform);
+                    break;
+                case "TiltButton":
+                    TiltButtonInteraction tiltButton = hit.collider.GetComponentInParent<TiltButtonInteraction>();
+                    tiltButton?.OnInteract();
+                    break;
+                default:
                     break;
             }
         }

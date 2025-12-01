@@ -10,7 +10,7 @@ public class SlidePuzzle : MonoBehaviour
     List<Transform> pieces;
     int size, emptyLocation;
     DoorControl doorCon;
-    bool shuffling = false;
+    bool hasFinished = false;
     void Awake()
     {
         doorCon = GetComponent<DoorControl>();
@@ -21,14 +21,6 @@ public class SlidePuzzle : MonoBehaviour
     {
         CreateSlidePieces();
         Shuffle();
-    }
-    void Update()
-    {
-        // if (!shuffling && CheckCompletion())
-        // {
-        //     shuffling = true;
-        //     StartCoroutine(WaitShuffle(0.5f));
-        // }
     }
     void CreateSlidePieces()
     {
@@ -105,7 +97,7 @@ public class SlidePuzzle : MonoBehaviour
             }
         }
         Debug.Log(selectedPiece.name + CheckCompletion());
-        if (CheckCompletion())
+        if (CheckCompletion() && !hasFinished)
         {
             OnFinish();
         }
@@ -133,12 +125,6 @@ public class SlidePuzzle : MonoBehaviour
         }
         return true;
     }
-    IEnumerator WaitShuffle(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        Shuffle();
-        shuffling = false;
-    }
     void Shuffle()
     {
         int count = 0;
@@ -160,5 +146,6 @@ public class SlidePuzzle : MonoBehaviour
     void OnFinish()
     {
         doorCon.OpenDoor();
+        hasFinished = true;
     }
 }

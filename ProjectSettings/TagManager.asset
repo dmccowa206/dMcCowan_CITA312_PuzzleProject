@@ -9,6 +9,7 @@ TagManager:
   - SlidePiece
   - MazeNormal
   - MazeSpecial
+  - TiltButton
   layers:
   - Default
   - TransparentFX
