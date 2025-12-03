@@ -6,6 +6,6 @@ public class TiltButtonInteraction : MonoBehaviour
     [SerializeField] Vector3 direction;
     public void OnInteract()
     {
-        maze.GetComponent<MazeTilt>().Tilt(direction);
+        maze.GetComponent<MazeTilt>().SetTilt(direction);
     }
 }

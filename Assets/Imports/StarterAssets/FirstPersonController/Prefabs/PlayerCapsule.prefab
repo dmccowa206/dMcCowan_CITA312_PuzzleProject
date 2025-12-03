@@ -227,6 +227,7 @@ MonoBehaviour:
   Gravity: -15
   JumpTimeout: 0.1
   FallTimeout: 0.15
+  interactRange: 2.5
   Grounded: 1
   GroundedOffset: -0.14
   GroundedRadius: 0.5
@@ -269,6 +270,7 @@ MonoBehaviour:
   look: {x: 0, y: 0}
   jump: 0
   sprint: 0
+  interact: 0
   analogMovement: 0
   cursorLocked: 1
   cursorInputForLook: 1

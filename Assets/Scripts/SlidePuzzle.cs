@@ -7,10 +7,12 @@ public class SlidePuzzle : MonoBehaviour
 {
     [SerializeField] Transform piecePrefab;
     [SerializeField] float width = 1f;
+    Transform quad;
     List<Transform> pieces;
     int size, emptyLocation;
     DoorControl doorCon;
     bool hasFinished = false;
+    int[] special = {5, 4, 3, 6, 7, 8, 0, 1, 2};
     void Awake()
     {
         doorCon = GetComponent<DoorControl>();
@@ -41,44 +43,48 @@ public class SlidePuzzle : MonoBehaviour
                 }
                 else
                 {
-                    Mesh mesh = piece.GetComponent<MeshFilter>().mesh;
+                    float uvWidth = 1/(float)size;
+                    quad = piece.GetChild(0);
+                    Mesh mesh = quad.GetComponent<MeshFilter>().mesh;
+                    // Mesh mesh = piece.GetComponent<MeshFilter>().mesh;
                     // Debug.Log(mesh.vertices.Length);
-                    Vector3[] vertices = mesh.vertices;
-                    Vector2[] uv = new Vector2[vertices.Length];
-                    // uv[0] = new Vector2(width * col, 1 - (width *(row + 1)));
-                    // uv[1] = new Vector2(width * (col + 1), 1 - (width *(row + 1)));
-                    // uv[2] = new Vector2(width * col, 1 - (width * row));
-                    // uv[3] = new Vector2(width * (col + 1), 1 - (width * row));
-                    for (int i = 0; i < uv.Length; i++)
-                    {
-                        if (vertices[i].y > 0)
-                        {
-                            if(vertices[i].z > 0)
-                            {
-                                if (vertices[i].x < 0)
-                                {
-                                    uv[i] = new Vector2(width * col, 1 - (width *(row + 1)));
-                                }
-                                else
-                                {
-                                    uv[i] = new Vector2(width * (col + 1), 1 - (width *(row + 1)));
-                                }
-                            }
-                            else
-                            {
-                                if (vertices[i].x < 0)
-                                {
-                                    uv[i] = new Vector2(width * col, 1 - (width * row));
-                                }
-                                else
-                                {
-                                    uv[i] = new Vector2(width * (col + 1), 1 - (width * row));
-                                }
-                            }
-                        }
-                        //uv[i] = new Vector2(vertices[i].x, vertices[i].z);
-                        Debug.Log(vertices[i]);
-                    }
+                    // Vector3[] vertices = mesh.vertices;
+                    Vector2[] uv = new Vector2[4];
+                    uv[0] = new Vector2(uvWidth * col, 1 - (uvWidth *(row + 1)));
+                    uv[1] = new Vector2(uvWidth * (col + 1), 1 - (uvWidth *(row + 1)));
+                    uv[2] = new Vector2(uvWidth * col, 1 - (uvWidth * row));
+                    uv[3] = new Vector2(uvWidth * (col + 1), 1 - (uvWidth * row));
+                    Debug.Log(uv);
+                    // for (int i = 0; i < uv.Length; i++)
+                    // {
+                    //     if (vertices[i].y > 0)
+                    //     {
+                    //         if(vertices[i].z > 0)
+                    //         {
+                    //             if (vertices[i].x < 0)
+                    //             {
+                    //                 uv[i] = new Vector2(width * col, 1 - (width *(row + 1)));
+                    //             }
+                    //             else
+                    //             {
+                    //                 uv[i] = new Vector2(width * (col + 1), 1 - (width *(row + 1)));
+                    //             }
+                    //         }
+                    //         else
+                    //         {
+                    //             if (vertices[i].x < 0)
+                    //             {
+                    //                 uv[i] = new Vector2(width * col, 1 - (width * row));
+                    //             }
+                    //             else
+                    //             {
+                    //                 uv[i] = new Vector2(width * (col + 1), 1 - (width * row));
+                    //             }
+                    //         }
+                    //     }
+                    //     //uv[i] = new Vector2(vertices[i].x, vertices[i].z);
+                    //     Debug.Log(vertices[i]);
+                    // }
                     mesh.uv = uv;
                 }
             }
@@ -119,6 +125,17 @@ public class SlidePuzzle : MonoBehaviour
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i].name != $"{i}")
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    public bool CheckSpecial()
+    {
+        for (int i = 0; i < pieces.Count; i++)
+        {
+            if (pieces[i].name != special[i].ToString())
             {
                 return false;
             }
