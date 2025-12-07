@@ -10,9 +10,12 @@ namespace StarterAssets
 		[Header("Character Input Values")]
 		public Vector2 move;
 		public Vector2 look;
+		public Vector2 point;
 		public bool jump;
 		public bool sprint;
 		public bool interact;
+		public bool pause;
+		public bool click;
 
 		[Header("Movement Settings")]
 		public bool analogMovement;
@@ -48,6 +51,38 @@ namespace StarterAssets
         {
             InteractInput(value.isPressed);
         }
+		public void OnPause(InputValue value)
+        {
+            PauseInput(value.isPressed);
+        }
+		public void OnPoint(InputValue value)
+        {
+            if (!cursorInputForLook)
+            {
+                PointInput(value.Get<Vector2>());
+            }
+        }
+		public void OnClick(InputValue value)
+        {
+            if (!cursorInputForLook)
+            {
+                ClickInput(value.isPressed);
+            }
+        }
+		public void EnableMouseLook(bool toggle)
+		{
+			cursorLocked = toggle;
+			cursorInputForLook = toggle;
+			if (!cursorInputForLook)
+            {
+                LookInput(Vector2.zero);
+				SetCursorState(toggle);
+            }
+			else
+            {
+				SetCursorState(toggle);
+            }
+		}
 #endif
 
 
@@ -73,6 +108,18 @@ namespace StarterAssets
 		public void InteractInput(bool newInteractState)
         {
             interact = newInteractState;
+        }
+		public void PauseInput(bool newPauseState)
+        {
+            pause = newPauseState;
+        }
+		public void PointInput(Vector2 pointlocation)
+        {
+            point = pointlocation;
+        }
+		public void ClickInput(bool newClickState)
+        {
+            click = newClickState;
         }
 		
 		private void OnApplicationFocus(bool hasFocus)

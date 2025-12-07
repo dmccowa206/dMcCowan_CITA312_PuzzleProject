@@ -1,0 +1,146 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using StarterAssets;
+using UnityEngine.SceneManagement;
+using UnityEngine.ProBuilder.Shapes;
+using TMPro;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using Unity.Mathematics;
+
+public class GameManager : MonoBehaviour
+{
+    [SerializeField] GameObject player;
+    [Header("Progress Bars")]
+    [SerializeField] Slider progressBarHUD;
+    [SerializeField] Slider progressBarMenu;
+    [Header("Checkpoints")]
+    [SerializeField] Transform currentChkpt;
+    [SerializeField] List<Transform> Chkpts;
+    [Header("Puzzles")]
+    [SerializeField] GameObject slidePuzzle;
+    [SerializeField] GameObject mazePuzzle;
+    [SerializeField] GameObject riddlePuzzle;
+    [Header("Overlays")]
+    [SerializeField] Canvas uiOverlay;
+    [SerializeField] Canvas pauseMenu;
+    [SerializeField] Canvas victoryScreen;
+    [Header("Audio")]
+    [SerializeField] AudioSource audioPlayer;
+    [SerializeField] AudioClip clickSfx;
+    [SerializeField] AudioClip puzzleSolvedSfx;
+    [SerializeField] AudioClip secretSolvedSfx;
+    [SerializeField] AudioClip victorySfx;
+    StarterAssetsInputs starterAssetsInputs;
+    SceneHandler sh;
+
+    void Awake()
+    {
+        starterAssetsInputs = player.GetComponent<StarterAssetsInputs>();
+        sh = FindAnyObjectByType<SceneHandler>();
+        // Debug.Log($"Scene Handler: {sh}");
+    }
+    void Start()
+    {
+        if (sh.GetRestarting())
+        {
+            starterAssetsInputs.EnableMouseLook(true);
+            Continue();
+        }
+    }
+    void Update()
+    {
+        HandleMenu();
+    }
+    void HandleMenu()
+    {
+        if (!starterAssetsInputs.pause) return;
+
+        starterAssetsInputs.PauseInput(false);
+
+        uiOverlay.enabled = false;
+        pauseMenu.enabled = true;
+        starterAssetsInputs.EnableMouseLook(false);
+        player.GetComponent<PlayerInput>().enabled = false;
+    }
+
+    public void ActivateChkpt(int index)
+    {
+        
+        Debug.Log($"Checkpoint Activated {index}");
+        if (index > sh.GetChkPtIndex() || sh.GetRestarting())
+        {
+            sh.SetChkPtIndex(index);
+            progressBarHUD.value = index;
+            progressBarHUD.GetComponentInChildren<TextMeshProUGUI>().text = $"Progress {index/progressBarHUD.maxValue * 100 : 0}%";
+            progressBarMenu.value = index;
+            progressBarMenu.GetComponentInChildren<TextMeshProUGUI>().text = $"Progress {index/progressBarMenu.maxValue * 100 : 0}%";
+        }
+        if (index == progressBarMenu.maxValue)
+        {
+            OnVictory();
+        }
+    }
+    void OnVictory()
+    {
+        uiOverlay.enabled = false;
+        victoryScreen.enabled = true;
+        starterAssetsInputs.EnableMouseLook(false);
+        player.GetComponent<PlayerInput>().enabled = false;
+    }
+    public void OnRestartClick()
+    {
+        // Debug.Log("Restart");
+        sh.HandleRestart();
+        uiOverlay.enabled = true;
+        pauseMenu.enabled = false;
+        starterAssetsInputs.EnableMouseLook(true);
+        player.GetComponent<PlayerInput>().enabled = true;
+    }
+    public void OnQuitClick()
+    {
+        // Debug.Log("Quit");
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void OnCloseClick()
+    {
+        // Debug.Log("Close");
+        uiOverlay.enabled = true;
+        pauseMenu.enabled = false;
+        starterAssetsInputs.EnableMouseLook(true);
+        player.GetComponent<PlayerInput>().enabled = true;
+    }
+    public void OnReturnClick()
+    {
+        // Debug.Log("Return");
+        uiOverlay.enabled = true;
+        victoryScreen.enabled = false;
+        starterAssetsInputs.EnableMouseLook(true);
+    }
+    // public void NewGame()
+    // {
+    //     sh.SetChkPtIndex(0);
+    //     Continue();
+    // }
+    public void Continue()
+    {   
+        int index = sh.GetChkPtIndex();
+        ActivateChkpt(index);
+        currentChkpt = Chkpts[index].transform;
+        player.transform.SetPositionAndRotation(currentChkpt.position, currentChkpt.rotation);
+        if (index >= 1)
+        {
+            slidePuzzle.GetComponentInChildren<SlidePuzzle>().OnFinish();
+            if (index >= 2)
+            {
+                mazePuzzle.GetComponentInChildren<MazeFinish>().OnFinish();
+                if (index >= 3)
+                {
+                    mazePuzzle.GetComponentInChildren<MazeFinish>().OnSpecial();
+                }
+            }
+        }
+        sh.SetRestarting(false);
+    }
+}

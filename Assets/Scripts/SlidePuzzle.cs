@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 
 public class SlidePuzzle : MonoBehaviour
 {
@@ -13,11 +11,13 @@ public class SlidePuzzle : MonoBehaviour
     DoorControl doorCon;
     bool hasFinished = false;
     int[] special = {5, 4, 3, 6, 7, 8, 0, 1, 2};
+    GameManager gm;
     void Awake()
     {
         doorCon = GetComponent<DoorControl>();
         size = 3;
         pieces = new List<Transform>();
+        gm = FindAnyObjectByType<GameManager>();
     }
     void Start()
     {
@@ -54,7 +54,7 @@ public class SlidePuzzle : MonoBehaviour
                     uv[1] = new Vector2(uvWidth * (col + 1), 1 - (uvWidth *(row + 1)));
                     uv[2] = new Vector2(uvWidth * col, 1 - (uvWidth * row));
                     uv[3] = new Vector2(uvWidth * (col + 1), 1 - (uvWidth * row));
-                    Debug.Log(uv);
+                    // Debug.Log(uv);
                     // for (int i = 0; i < uv.Length; i++)
                     // {
                     //     if (vertices[i].y > 0)
@@ -102,7 +102,7 @@ public class SlidePuzzle : MonoBehaviour
                 if (SwapIfValid(i, +1, size - 1)) { break; }
             }
         }
-        Debug.Log(selectedPiece.name + CheckCompletion());
+        // Debug.Log(selectedPiece.name + CheckCompletion());
         if (CheckCompletion() && !hasFinished)
         {
             OnFinish();
@@ -112,10 +112,11 @@ public class SlidePuzzle : MonoBehaviour
     {
         if (((i % size) != colCheck) && ((i + offset) == emptyLocation))
         {
-            Debug.Log($"{i} {size}  {colCheck} {offset}");
+            // Debug.Log($"{i} {size}  {colCheck} {offset}");
             (pieces[i], pieces[i + offset]) = (pieces[i + offset], pieces[i]);
             (pieces[i].localPosition, pieces[i + offset].localPosition) = (pieces[i + offset].localPosition, pieces[i].localPosition);
             emptyLocation = i;
+            GetComponent<AudioSource>().Play();
             return true;
         }
         return false;
@@ -160,9 +161,10 @@ public class SlidePuzzle : MonoBehaviour
                 else if (SwapIfValid(rand, +1, size - 1)) { count++; }
         }
     }
-    void OnFinish()
+    public void OnFinish()
     {
         doorCon.OpenDoor();
         hasFinished = true;
+        gm.ActivateChkpt(1);
     }
 }

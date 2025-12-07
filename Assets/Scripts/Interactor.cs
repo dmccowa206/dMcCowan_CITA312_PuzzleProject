@@ -24,10 +24,7 @@ public class Interactor : MonoBehaviour
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, firstPersonController.interactRange))
         {
-            
-                    // ObjectInteraction obInteract = hit.collider.GetComponentInParent<ObjectInteraction>();
-                    // obInteract?.Interaction();
-            Debug.Log($"Touched {hit.collider.gameObject.tag} run Interaction");
+            // Debug.Log($"Touched {hit.collider.gameObject.tag} run Interaction");
 
             switch(hit.collider.gameObject.tag)
             {
@@ -46,6 +43,13 @@ public class Interactor : MonoBehaviour
                 default:
                     break;
             }
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Checkpoint"))
+        {
+            
         }
     }
 }
