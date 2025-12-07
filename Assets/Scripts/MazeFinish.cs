@@ -6,6 +6,7 @@ public class MazeFinish : MonoBehaviour
 {
     DoorControl doorCon;
     bool hasFinished = false;
+    float specialTimer = -1;
     new Collider collider;
     GameManager gm;
     void Start()
@@ -14,16 +15,34 @@ public class MazeFinish : MonoBehaviour
         collider = gameObject.GetComponent<SphereCollider>();
         gm = FindAnyObjectByType<GameManager>();
     }
+    void Update()
+    {
+        if (specialTimer >= 0)
+        {
+            specialTimer -= Time.deltaTime;
+            if (specialTimer <= 0)
+            {
+                OnSpecial();
+            }
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("MazeNormal") && !hasFinished)
         {
             OnFinish();
         }
-        else if (other.gameObject.CompareTag("MazeSpecial"))
+        else if (other.gameObject.CompareTag("MazeSpecial") && hasFinished)
         {
             //do something for last puzzle
-            OnSpecial();
+            specialTimer = 5f;
+        }
+    }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("MazeSpecial"))
+        {
+            specialTimer = -1;
         }
     }
 
@@ -32,6 +51,7 @@ public class MazeFinish : MonoBehaviour
         doorCon.OpenDoor();
         hasFinished = true;
         gm.ActivateChkpt(2);
+        gm.audioPlayer.PlayPuzzleClip();
     }
     public void OnSpecial()
     {

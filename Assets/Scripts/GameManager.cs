@@ -27,11 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Canvas pauseMenu;
     [SerializeField] Canvas victoryScreen;
     [Header("Audio")]
-    [SerializeField] AudioSource audioPlayer;
-    [SerializeField] AudioClip clickSfx;
-    [SerializeField] AudioClip puzzleSolvedSfx;
-    [SerializeField] AudioClip secretSolvedSfx;
-    [SerializeField] AudioClip victorySfx;
+    [SerializeField] public AudioPlayer audioPlayer;
     StarterAssetsInputs starterAssetsInputs;
     SceneHandler sh;
 
@@ -84,6 +80,7 @@ public class GameManager : MonoBehaviour
     }
     void OnVictory()
     {
+        audioPlayer.PlayVictoryClip();
         uiOverlay.enabled = false;
         victoryScreen.enabled = true;
         starterAssetsInputs.EnableMouseLook(false);
@@ -91,6 +88,7 @@ public class GameManager : MonoBehaviour
     }
     public void OnRestartClick()
     {
+        audioPlayer.PlayClickClip();
         // Debug.Log("Restart");
         sh.HandleRestart();
         uiOverlay.enabled = true;
@@ -100,11 +98,13 @@ public class GameManager : MonoBehaviour
     }
     public void OnQuitClick()
     {
+        audioPlayer.PlayClickClip();
         // Debug.Log("Quit");
         SceneManager.LoadScene("MainMenu");
     }
     public void OnCloseClick()
     {
+        audioPlayer.PlayClickClip();
         // Debug.Log("Close");
         uiOverlay.enabled = true;
         pauseMenu.enabled = false;
@@ -113,10 +113,12 @@ public class GameManager : MonoBehaviour
     }
     public void OnReturnClick()
     {
+        audioPlayer.PlayClickClip();
         // Debug.Log("Return");
         uiOverlay.enabled = true;
         victoryScreen.enabled = false;
         starterAssetsInputs.EnableMouseLook(true);
+        player.GetComponent<PlayerInput>().enabled = true;
     }
     // public void NewGame()
     // {

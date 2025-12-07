@@ -10,6 +10,7 @@ public class SlidePuzzle : MonoBehaviour
     int size, emptyLocation;
     DoorControl doorCon;
     bool hasFinished = false;
+    bool hasPlayedSpecial = false;
     int[] special = {5, 4, 3, 6, 7, 8, 0, 1, 2};
     GameManager gm;
     void Awake()
@@ -141,12 +142,17 @@ public class SlidePuzzle : MonoBehaviour
                 return false;
             }
         }
+        if (hasFinished && !hasPlayedSpecial)
+        {
+            gm.audioPlayer.PlaySecretClip();
+        }
         return true;
     }
     void Shuffle()
     {
         int count = 0;
         int last = 0;
+        GetComponent<AudioSource>().enabled = false;
         while (count < (size * size * size))
         {
             int rand = Random.Range(0, size * size);
@@ -160,11 +166,13 @@ public class SlidePuzzle : MonoBehaviour
                 else if (SwapIfValid(rand, -1, 0)) { count++; }
                 else if (SwapIfValid(rand, +1, size - 1)) { count++; }
         }
+        GetComponent<AudioSource>().enabled = true;
     }
     public void OnFinish()
     {
         doorCon.OpenDoor();
         hasFinished = true;
         gm.ActivateChkpt(1);
+        gm.audioPlayer.PlayPuzzleClip();
     }
 }
