@@ -8,11 +8,12 @@ public class MenuManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI continueText;
     [SerializeField] GameObject newGameBtn;
     [SerializeField] GameObject continueBtn;
+    AudioSource audioSource;
     SceneHandler sh;
     void Awake()
     {
         sh = FindAnyObjectByType<SceneHandler>();
-        
+        audioSource = GetComponent<AudioSource>();
     }
     void Start()
     {
@@ -31,6 +32,7 @@ public class MenuManager : MonoBehaviour
     }
     public void OnNewGame()
     {
+        audioSource.Play();
         if (sh != null)
         {
             sh?.SetChkPtIndex(0);
@@ -43,10 +45,12 @@ public class MenuManager : MonoBehaviour
     }
     public void OnContinue()
     {
+        audioSource.Play();
         sh?.HandleRestart();
     }
     public void OnQuit()
     {
+        audioSource.Play();
         Application.Quit();
         UnityEditor.EditorApplication.isPlaying = false;
     }
