@@ -60,7 +60,7 @@ public class MazeFinish : MonoBehaviour
     {
         if (Physics.ComputePenetration(collider, collider.transform.position, collider.transform.rotation, collision.collider, collision.collider.transform.position, collision.collider.transform.rotation, out Vector3 direction, out float distance))
         {
-            Debug.Log($"{direction} + {distance}");
+            // Debug.Log($"{direction} + {distance}");
             gameObject.transform.Translate(direction * distance);
         }
     }
