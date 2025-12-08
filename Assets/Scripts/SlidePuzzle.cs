@@ -69,7 +69,6 @@ public class SlidePuzzle : MonoBehaviour
                 if (SwapIfValid(i, +1, size - 1)) { break; }
             }
         }
-        // Debug.Log(selectedPiece.name + CheckCompletion());
         if (CheckCompletion() && !hasFinished)
         {
             OnFinish();
@@ -79,7 +78,6 @@ public class SlidePuzzle : MonoBehaviour
     {
         if (((i % size) != colCheck) && ((i + offset) == emptyLocation))
         {
-            // Debug.Log($"{i} {size}  {colCheck} {offset}");
             (pieces[i], pieces[i + offset]) = (pieces[i + offset], pieces[i]);
             (pieces[i].localPosition, pieces[i + offset].localPosition) = (pieces[i + offset].localPosition, pieces[i].localPosition);
             emptyLocation = i;
