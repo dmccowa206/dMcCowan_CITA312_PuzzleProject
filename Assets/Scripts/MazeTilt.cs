@@ -40,10 +40,6 @@ public class MazeTilt : MonoBehaviour
         {
             deltaZ = Mathf.Clamp(deltaZ, 360f-tiltMax, 360f+tiltMax);
         }
-        // Debug.Log($"{deltaX} = {gameObject.transform.localEulerAngles.x} + {direction.x} * {tiltRate}");
-        // Debug.Log($"{deltaZ} = {gameObject.transform.localEulerAngles.z} + {direction.z} * {tiltRate}");
-        // Debug.Log($"EulerAngle: {gameObject.transform.localEulerAngles.x} {gameObject.transform.localEulerAngles.z}");
-        // Debug.Log($"Local rotation: {gameObject.transform.localRotation.x} {gameObject.transform.localRotation.z}");
         targetRotation = Quaternion.Euler(deltaX, prevEuler.y, deltaZ);
     }
     void ProcessSpecialStatus()

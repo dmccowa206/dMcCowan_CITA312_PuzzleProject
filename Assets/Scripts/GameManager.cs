@@ -3,11 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using StarterAssets;
 using UnityEngine.SceneManagement;
-using UnityEngine.ProBuilder.Shapes;
 using TMPro;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using Unity.Mathematics;
 
 public class GameManager : MonoBehaviour
 {

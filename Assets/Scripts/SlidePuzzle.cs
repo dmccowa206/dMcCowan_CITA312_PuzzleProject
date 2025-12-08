@@ -47,45 +47,11 @@ public class SlidePuzzle : MonoBehaviour
                     float uvWidth = 1/(float)size;
                     quad = piece.GetChild(0);
                     Mesh mesh = quad.GetComponent<MeshFilter>().mesh;
-                    // Mesh mesh = piece.GetComponent<MeshFilter>().mesh;
-                    // Debug.Log(mesh.vertices.Length);
-                    // Vector3[] vertices = mesh.vertices;
                     Vector2[] uv = new Vector2[4];
                     uv[0] = new Vector2(uvWidth * col, 1 - (uvWidth *(row + 1)));
                     uv[1] = new Vector2(uvWidth * (col + 1), 1 - (uvWidth *(row + 1)));
                     uv[2] = new Vector2(uvWidth * col, 1 - (uvWidth * row));
                     uv[3] = new Vector2(uvWidth * (col + 1), 1 - (uvWidth * row));
-                    // Debug.Log(uv);
-                    // for (int i = 0; i < uv.Length; i++)
-                    // {
-                    //     if (vertices[i].y > 0)
-                    //     {
-                    //         if(vertices[i].z > 0)
-                    //         {
-                    //             if (vertices[i].x < 0)
-                    //             {
-                    //                 uv[i] = new Vector2(width * col, 1 - (width *(row + 1)));
-                    //             }
-                    //             else
-                    //             {
-                    //                 uv[i] = new Vector2(width * (col + 1), 1 - (width *(row + 1)));
-                    //             }
-                    //         }
-                    //         else
-                    //         {
-                    //             if (vertices[i].x < 0)
-                    //             {
-                    //                 uv[i] = new Vector2(width * col, 1 - (width * row));
-                    //             }
-                    //             else
-                    //             {
-                    //                 uv[i] = new Vector2(width * (col + 1), 1 - (width * row));
-                    //             }
-                    //         }
-                    //     }
-                    //     //uv[i] = new Vector2(vertices[i].x, vertices[i].z);
-                    //     Debug.Log(vertices[i]);
-                    // }
                     mesh.uv = uv;
                 }
             }
